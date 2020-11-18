@@ -3,19 +3,38 @@ node
 10.23.0
 
 Ganache
-172.16.80.1:8545
+172.26.80.1:8545
 5777
 
+SETTARE GAS LIMIT ALTO ALTISSIMO
+ ganache-cli -v -g 0 -d -m abbucchinemammt -l 9000000000000000 --db /mnt/c/Users/frazur/source/repos/alastria-tests/alastria-identity/.ganache/
+
+abbucchinemammt
 Accounts
-"0xd56989583c5cd23df557ab57cbd6879d5ce4a7a0", 1f5ad0fa0e507a996d54a3cb7a94f17c3894b525b4dfff9307d98c4a1ef357d3
-"0xb5f862ad9cf33f8746499ea24c827336c50822e0", cbc70f7c6a8ba0475886df54d98ccd2d27f36ff8033fead402597ae997078f61
-"0xbcf78ad15f7dbac7f1a108b73ab20a9ca614c4e6", c14a74fb8c96a057727168ad98f30b8c90884131489fda2b66a47834f4dfc569
-"0xb9937975edd4c88a810112fd78dcc550945f231f",
-"0x63db89e3b9d2d15993cf5f0888c5bf5786b995d5",
-"0xe654e1eb594b92fa71152c79968b1a29caa276f8",
-"0x3630ec74cd0660c09cfec1526118e21eb1fc9bbf",
-"0x920b627750908d4467706f9dc14d41b4c3aa750d",
-"0x5fe0dea4f825665ab7ade327ac51cabe85fb0adc",
-"0x1025a57714778a4767849d390acec143898b09ec"
+ADDRESS
+0x895c36b2a28e975c50dfC4FF24AAb0e266857bdc
+ADDRESS
+0x1113cE12af8c143940c915CD55E4098007c1F448
+ADDRESS
+0xC24ED08202717E556dB1f7c3839431F5EcAd71BA
 
 
+
+Creazione keystores (??)
+
+npm i in dev-tools abbucchinemammt
+
+FlattenContracts  OK
+
+deployUpdateContracts OK
+Genera ContractInfo.md
+(smaialato, manca la prima riga di Eidas)
+
+modificare il pacchetto encodato della chiamata a createIdentity (perché l'abi non si trova con quello generato)
+commentata la tx3
+npm i ethers
+cambiare l'address dell'identitymanager nello script setAdminProxy
+cambiare l'indirizzo di ganache 
+truffle exec setAdminProxy.js --network development
+
+-----errore revert unpredictable gas limit

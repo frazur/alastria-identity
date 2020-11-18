@@ -14,6 +14,7 @@ web3 = new Web3(new Web3.providers.HttpProvider(nodeUrl))
 let solidityEidas = fs.readFileSync(config.contractEidas, 'utf8')
 let solidityManager = fs.readFileSync(config.contractManager, 'utf8')
 let address = web3.eth.accounts[config.addressPosition]  // you can change the address in config
+console.log("Address[2] " +address)
 let password = config.addressPwdAlastria  // you can change the password address in config
 
 function unlockAccount() {
@@ -154,6 +155,7 @@ function saveAddresesInfo(address, contracsName) {
     fs.writeFile(config.contractInfoPath, contractInfoHeaders, function(err) {
       if(err) throw err;
     })
+    console.log("EIDAS contractInfo "+contracInfo)
     fs.appendFile(config.contractInfoPath, contracInfo, function(err) {
       if(err) throw err;
       console.log(`${contractName} address info saved!`)

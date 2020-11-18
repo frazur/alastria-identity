@@ -1,2 +1,9 @@
 const privateKeyToPublicKey = require('ethereum-private-key-to-public-key')
-console.log(privateKeyToPublicKey(Buffer.from('50c1e2076a6b85073a8958540bfe908995cd59bcf35d3dde5ff4e0d8cc3184bb', 'hex')).toString('hex'))
+const fs = require('fs');
+const keythereum = require('keythereum');
+const password = 'Passw0rd';
+const adminPath = '../dev-tools/deployContracts/mocked-identity-keys/admin-6e3976aeaa3a59e4af51783cc46ee0ffabc5dc11';
+
+let pk = keythereum.recover(password, JSON.parse(fs.readFileSync(adminPath, 'utf8')))
+console.log("PrivK " + pk.toString('hex'))
+console.log("PubK "+privateKeyToPublicKey(Buffer.from(pk, 'hex')).toString('hex'))
