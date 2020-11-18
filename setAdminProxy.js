@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const ethers = require("ethers");
 // Admin keystore
-const adminPath = path.resolve('./utils/keystore/account3.json');
+const adminPath = path.resolve('./utils/keystore/account2.json');
 // Identity Manager Address
 const imAddress = "0x7678f4289e2a6ce4295a1040b415784624a6cb60";
 
