@@ -11,12 +11,30 @@ SETTARE GAS LIMIT ALTO ALTISSIMO
 
 abbucchinemammt
 Accounts
-ADDRESS
-0x895c36b2a28e975c50dfC4FF24AAb0e266857bdc
-ADDRESS
-0x1113cE12af8c143940c915CD55E4098007c1F448
-ADDRESS
-0xC24ED08202717E556dB1f7c3839431F5EcAd71BA
+(0) 0x895c36b2a28e975c50dfC4FF24AAb0e266857bdc (100 ETH)
+(1) 0x1113cE12af8c143940c915CD55E4098007c1F448 (100 ETH)
+(2) 0xC24ED08202717E556dB1f7c3839431F5EcAd71BA (100 ETH) <- admin
+(3) 0x3BdE89506ECE0fC20480e0495186c0B3E4EFD787 (100 ETH)
+(4) 0x306b9F51c32c4ca801219856f19273A9652e085f (100 ETH)
+(5) 0x154Ab3470aC44752951eC5F693A2B37cc62fE67a (100 ETH)
+(6) 0x2C1956050a1FBC651cEf7A4476093F0a829e4887 (100 ETH)
+(7) 0x4e22EED455E120Bb6813F16F715e917a4b6aacB2 (100 ETH)
+(8) 0x673d51aA94dC06a0c6537b57cb6C1D3A4c913178 (100 ETH)
+(9) 0x105471EaFBF79ad4f918577d8C686068cf1A64D9 (100 ETH)
+
+Private Keys
+==================
+(0) 0xe7cf944b7c1e2ca68ed9dda0823346f03554c0b881bea0090b2f66ce87de5a1c
+(1) 0xcb8595af2a4d21b08f19f14b83c78ecc8470c1c40d632d858fea175fbfb2a9f8
+(2) 0xa2494e03aee80ea9140f9827e50ef9e045af426d25f885cdabdddb3ce1f4b9fd <- admin
+(3) 0xf65537b9c3bebea5253a2262a68ae83791ccb9d6f50e2506f574bc9730050336
+(4) 0x3df53f1ad7971d927b8b3e65fdabb955950f018f634a2611994a9915f7fff649
+(5) 0x2ef5c2077bd07c102e6569299fa2b760857357424aec50ce1bc7a1676ab40f97
+(6) 0x834fbb73477561dd6cb9c44329b311de885176af953d3e45b89b9c4dd6dcd64d
+(7) 0x01b41335346ad42ab15afde9ce2fe14e90bccf7e1fb7c542ba99f77a419c2e83
+(8) 0x8cae75cd84d2fabf4b08e76f3e7a6c4594973b5a9f72cf550062b3c0848d0a61
+(9) 0x7298966f01ab1970b85fa3a40d03a2d9900a84b2d42c1b5d78d0f3ede7df375f
+
 
 
 
@@ -30,11 +48,30 @@ deployUpdateContracts OK
 Genera ContractInfo.md
 (smaialato, manca la prima riga di Eidas)
 
-modificare il pacchetto encodato della chiamata a createIdentity (perché l'abi non si trova con quello generato)
-commentata la tx3
+splittato setAdminProxy in due:
+- setAdminProxy
+- setAdminProxy2
+
 npm i ethers
 cambiare l'address dell'identitymanager nello script setAdminProxy
 cambiare l'indirizzo di ganache 
+creare il keystore di un account (con ether) su ganache, da qui in avanti admin
+modificare il pacchetto encodato della chiamata a createIdentity (perché l'abi non si trova con quello generato) in modo da passare la pubK dell'admin (ricordarsi di cambiare 04 iniziale in 0x)
+
 truffle exec setAdminProxy.js --network development
 
------errore revert unpredictable gas limit
+recuperare l'indirizzo del proxy da truffle console
+
+  im.identityKeys.call('0xC24ED08202717E556dB1f7c3839431F5EcAd71BA') <<-- address dell'admin
+  '0xb46C15B842ff81204A2A46Ec82e160D5292556bB'  <<---proxy
+per controverifica, recuperare l'alastriaProxy a quell'indirizzo e:
+    ap.owner.call()
+    '0x7678f4289e2A6CE4295a1040b415784624a6cB60' <<-- identity manager
+
+Settare l'indirizzo del proxy in setAdminProxy2
+truffle exec setAdminProxy2.js --network development
+
+da truffle console si può verificare 
+let pkm = await AlastriaPublicKeyRegistry.at('0x7958fb124e88341fef7c60eea7ccfe11a8e09cac')
+ pkm.getCurrentPublicKey('0xb46C15B842ff81204A2A46Ec82e160D5292556bB')
+ 0xa2673e63b92072e5b1c71571e22439e294ba3a36516fee0c765cc7a2d38a1c66b4c1a7b1449b9136866a654e84a42ff814c6fdaa16016f0052da9e0ddba30eae
