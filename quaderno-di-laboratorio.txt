@@ -6,6 +6,8 @@ Ganache su WSL
 127.0.0.1:8545
 5777
 
+ganache-cli -v -g 0 -d -m abbucchinemammt -l 9000000000000000 --db /mnt/c/Users/servill7/git/InnovationLab/alastria-identity/.ganache/
+
 Available Accounts
 ==================
 (0) 0x895c36b2a28e975c50dfC4FF24AAb0e266857bdc (100 ETH) -> admin
