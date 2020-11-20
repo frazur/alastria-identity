@@ -6,7 +6,7 @@ Ganache su WSL
 127.0.0.1:8545
 5777
 
-ganache-cli -v -g 0 -d -m abbucchinemammt -l 9000000000000000 --db /mnt/c/Users/servill7/git/InnovationLab/alastria-identity/.ganache/
+ganache-cli -v -g 0 -d -m <MNEMONIC> -l 9000000000000000 --db /mnt/c/Users/servill7/git/InnovationLab/alastria-identity/.ganache/
 
 Available Accounts
 ==================
@@ -35,12 +35,8 @@ Private Keys
 (9) 0x7298966f01ab1970b85fa3a40d03a2d9900a84b2d42c1b5d78d0f3ede7df375f
 
 2_deploy_registry_and_contracts.js
-const adminAddress = '<ADMIN_ACCOUNT_ADDRESS>' (es. 0x895c36b2a28e975c50dfC4FF24AAb0e266857bdc)
-const adminPrivK = '<ADMIN_ACCOUNT_PRIV_KEY>'; (es. 0xe7cf944b7c1e2ca68ed9dda0823346f03554c0b881bea0090b2f66ce87de5a1c)
+var mnemonic = "<MNEMONIC>"
+var accountIndex = 0
 
 Da WSL
 truffle migrate
-
-oppure
-
-npm i

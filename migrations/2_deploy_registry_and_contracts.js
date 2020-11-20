@@ -1,11 +1,14 @@
-var fs = require('fs');
+const fs = require('fs');
+const bip39 = require('bip39');
+const hdkey = require('ethereumjs-wallet/hdkey');
 
-var Eidas = artifacts.require("contracts/libs/Eidas.sol");
-var AlastriaIdentityManager = artifacts.require("contracts/identityManager/AlastriaIdentityManager.sol");
-var AlastriaIdentityServiceProvider = artifacts.require("contracts/identityManager/AlastriaIdentityServiceProvider.sol");
-var AlastriaIdentityIssuer = artifacts.require("contracts/identityManager/AlastriaIdentityIssuer.sol");
-var AlastriaPublicKeyRegistry = artifacts.require("contracts/registry/AlastriaPublicKeyRegistry.sol");
-
+var mnemonic = "abbucchinemammt"
+var accountIndex = 0
+const seed = bip39.mnemonicToSeed(mnemonic); // mnemonic is the string containing the words
+const hdk = hdkey.fromMasterSeed(seed);
+const addr_node = hdk.derivePath("m/44'/60'/0'/0/" + accountIndex); //m/44'/60'/0'/0/0 is derivation path for the first account. m/44'/60'/0'/0/1 is the derivation path for the second account and so on
+//const addr = addr_node.getWallet().getAddressString(); //check that this is the same with the address that ganache list for the first account to make sure the derivation is correct
+const adminPrivK = addr_node.getWallet().getPrivateKey().toString('hex');
 const privateKeyToPublicKey = require('ethereum-private-key-to-public-key')
 const _ = require('lodash');
 const SolidityFunction = require('web3/lib/web3/function');
@@ -13,8 +16,11 @@ const AlastriaIdentityManagerABI = JSON.parse(fs.readFileSync('../build/contract
 //TODO usare web3 encodeFunctionCall
 var functionDef = new SolidityFunction('', _.find(AlastriaIdentityManagerABI, { name: 'addKey' }), '');
 
-const adminAddress = '0x895c36b2a28e975c50dfC4FF24AAb0e266857bdc'
-const adminPrivK = 'e7cf944b7c1e2ca68ed9dda0823346f03554c0b881bea0090b2f66ce87de5a1c';
+var Eidas = artifacts.require("contracts/libs/Eidas.sol");
+var AlastriaIdentityManager = artifacts.require("contracts/identityManager/AlastriaIdentityManager.sol");
+var AlastriaIdentityServiceProvider = artifacts.require("contracts/identityManager/AlastriaIdentityServiceProvider.sol");
+var AlastriaIdentityIssuer = artifacts.require("contracts/identityManager/AlastriaIdentityIssuer.sol");
+var AlastriaPublicKeyRegistry = artifacts.require("contracts/registry/AlastriaPublicKeyRegistry.sol");
 
 module.exports = async function (deployer, network, accounts) {
   await deployer.deploy(Eidas);
@@ -36,11 +42,11 @@ module.exports = async function (deployer, network, accounts) {
   fs.appendFileSync('Contracts.md', "AlastriaIdentityIssuer | " + alastriaIdentityIssuer.address + "\n");
   fs.appendFileSync('Contracts.md', "AlastriaIdentityServiceProvider | " + alastriaIdentityServiceProvider.address + "\n");
 
-  let tx1 = await identityManager.prepareAlastriaID(adminAddress)
+  let tx1 = await identityManager.prepareAlastriaID(accounts[accountIndex])
   let pubK = '0x' + privateKeyToPublicKey(Buffer.from(adminPrivK, 'hex')).toString('hex').substring(2)
   let payloadData = functionDef.toPayload([pubK]).data;
   let tx2 = await identityManager.createAlastriaIdentity(payloadData)
-  let proxyAdmin = await identityManager.identityKeys.call(adminAddress)
+  let proxyAdmin = await identityManager.identityKeys.call(accounts[accountIndex])
   let tx3 = await identityManager.addIdentityIssuer(proxyAdmin, 3)
   console.log("HASH TX1: " + tx1.tx)
   console.log("HASH TX2: " + tx2.tx)
@@ -64,6 +70,7 @@ module.exports = async function (deployer, network, accounts) {
     }
   }
 
+  //TODO usare gli ABI reali
   var getContractsAbi = function () {
     return {
 
