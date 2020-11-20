@@ -39,5 +39,8 @@ const adminAddress = '<ADMIN_ACCOUNT_ADDRESS>' (es. 0x895c36b2a28e975c50dfC4FF24
 const adminPrivK = '<ADMIN_ACCOUNT_PRIV_KEY>'; (es. 0xe7cf944b7c1e2ca68ed9dda0823346f03554c0b881bea0090b2f66ce87de5a1c)
 
 Da WSL
-truffle compile
 truffle migrate
+
+oppure
+
+npm i

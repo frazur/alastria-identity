@@ -1,4 +1,12 @@
 
+```
+$ nvm use 10
+$ npm i
+```
+
+Se ci sono problemi rimuovere il package-lock.json
+
+
 # ALASTRIA IDENTITY 1.0
 Self-sovereign identity (SSI) implementation on Alastria network.
 
